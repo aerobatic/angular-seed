@@ -109,8 +109,8 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['karma']);
 
   grunt.loadNpmTasks('grunt-favicons');
-  // grunt.loadNpmTasks('grunt-aerobatic');
-  grunt.loadTasks('../grunt-aerobatic/tasks');
+  grunt.loadNpmTasks('grunt-aerobatic');
+  // grunt.loadTasks('../grunt-aerobatic/tasks');
   grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
