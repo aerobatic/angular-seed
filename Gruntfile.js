@@ -43,44 +43,70 @@ module.exports = function(grunt) {
         dest: 'dist/styles.min.css'
       }
     },
-    // watch: {
-    //   // scripts: {
-    //   //   files: ['**/*.js'],
-    //   //   tasks: ['uglify', 'stylus']
-    //   // },
-    //   css: {
-    //     files: ['css/*.styl'],
-    //     tasks: ['stylus', 'cssmin', 'clean']
-    //   }
-    // },
     ngmin: {
       target: {
         src: ['js/**/*.js'],
         dest: 'tmp/build.js'
       }
     },
+    watch: {
+      options: {
+        spawn: true,
+        livereload: true
+      },
+      stylus: {
+        files: ['css/*.styl', 'css/*.css'],
+        tasks: ['stylus', 'cssmin', 'clean']
+      },
+      js: {
+        files: ['js/**/*.js'],
+        tasks: ['jslint']
+      }
+    },
     clean: ['tmp'],
     aerobatic: {
       deploy: {
-        src: ['index.html', 'dist/*.*', 'favicons/*'],
+        src: ['index.html', 'dist/*.*', 'favicons/*', 'partials/*.html', 'images/*.jpeg'],
       },
       sim: {
         index: 'index.html',
         port: 3000,
-        watch: {
-          stylus: {
-            files: ['css/*.styl', 'css/*.css'],
-            tasks: ['stylus', 'cssmin', 'clean']
-          }
-        }
+        livereload: true
+      }
+    },
+    // See https://github.com/karma-runner/grunt-karma for more options
+    karma: {
+      options: {
+        files: [
+          'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js',
+          'http://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine.js',
+          'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.min.js',
+          'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-mocks.js',
+          'js/**/*.js',
+          'test/unit/**/*.js'
+        ],
+        frameworks: ['jasmine'],
+        browsers: ['Chrome'], //['PhantomJS'],
+        logLevel: 'INFO',
+        plugins : [
+          'karma-jasmine',
+          'karma-phantomjs-launcher',
+          'karma-chrome-launcher'
+        ],
+        reporters: 'dots'
+      },
+      unit: {
+        singleRun: true
       }
     }
   });
 
-  grunt.registerTask('sim', ['aerobatic:sim']);
+  // Specify the sync arg to avoid blocking the watch
+  grunt.registerTask('sim', ['aerobatic:sim:sync', 'watch']);
   grunt.registerTask('deploy', ['build', 'aerobatic:deploy']);
 
   grunt.registerTask('build', ['jshint', 'stylus', 'cssmin', 'ngmin', 'uglify', 'clean']);
+  grunt.registerTask('test', ['karma']);
 
   grunt.loadNpmTasks('grunt-favicons');
   // grunt.loadNpmTasks('grunt-aerobatic');
@@ -92,4 +118,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-ngmin');
+  grunt.loadNpmTasks('grunt-karma');
 };
