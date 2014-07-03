@@ -13,7 +13,10 @@ angular.module('seedServices').value('aerobatic', window.__config__);
 angular.module('angularSeed', ['ngRoute', 'seedServices', 'seedControllers'])
   .config(function ($routeProvider, $locationProvider, $sceDelegateProvider) {
     // Configure the the cdnHost to be whitelisted for cross-domain calls
-    $sceDelegateProvider.resourceUrlWhitelist(['http://' + __config__.cdnHost + '/**']);
+    $sceDelegateProvider.resourceUrlWhitelist([
+      'http://' + __config__.cdnHost + '/**',
+      'https://' + __config__.cdnHost + '/**'
+    ]);
 
     // Use the bang prefix for Google ajax crawlability
     // https://developers.google.com/webmasters/ajax-crawling/docs/specification?csw=1
