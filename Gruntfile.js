@@ -102,7 +102,7 @@ module.exports = function(grunt) {
   });
 
   // Specify the sync arg to avoid blocking the watch
-  grunt.registerTask('sim', ['aerobatic:sim:sync', 'watch']);
+  grunt.registerTask('sim', ['build', 'aerobatic:sim:sync', 'watch']);
   grunt.registerTask('deploy', ['build', 'aerobatic:deploy']);
 
   grunt.registerTask('build', ['jshint', 'stylus', 'cssmin', 'ngmin', 'uglify', 'clean']);
