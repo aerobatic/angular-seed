@@ -39,7 +39,7 @@
     "karma-jasmine": "^0.1.5",
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-chrome-launcher": "^0.1.4",
-    "grunt-aerobatic": "^0.1.7",
+    "grunt-aerobatic": "^0.1.9",
     "grunt-ng-annotate": "^0.3.1"
   }
 }
