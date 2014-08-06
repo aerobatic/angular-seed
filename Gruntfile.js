@@ -7,22 +7,10 @@ module.exports = function(grunt) {
     jshint: {
       all: ['Gruntfile.js', 'js/**/*.js', 'test/**/*.js']
     },
-    favicons: {
-      options: {
-        appleTouchBackgroundColor: "#ffffff",
-        html: 'index.html',
-        HTMLPrefix: 'favicons/',
-        windowsTile: false
-      },
-      icons: {
-        src: 'favicon.png',
-        dest: 'favicons'
-      }
-    },
     uglify: {
       build: {
         files: {
-          'dist/app.min.js': ['tmp/build.js']
+          'dist/app.min.js': ['tmp/annotated.js']
         }
       }
     },
@@ -43,10 +31,11 @@ module.exports = function(grunt) {
         dest: 'dist/styles.min.css'
       }
     },
-    ngmin: {
+    ngAnnotate: {
       target: {
-        src: ['js/**/*.js'],
-        dest: 'tmp/build.js'
+        files: {
+          'tmp/annotated.js': ['js/**/*.js']
+        }
       }
     },
     watch: {
@@ -79,14 +68,13 @@ module.exports = function(grunt) {
       options: {
         files: [
           'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js',
-          'http://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine.js',
           'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.min.js',
           'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-mocks.js',
           'js/**/*.js',
           'test/unit/**/*.js'
         ],
         frameworks: ['jasmine'],
-        browsers: ['Chrome'], //['PhantomJS'],
+        browsers: ['Chrome'],
         logLevel: 'INFO',
         plugins : [
           'karma-jasmine',
@@ -105,18 +93,16 @@ module.exports = function(grunt) {
   grunt.registerTask('sim', ['build', 'aerobatic:sim:sync', 'watch']);
   grunt.registerTask('deploy', ['build', 'aerobatic:deploy']);
 
-  grunt.registerTask('build', ['jshint', 'stylus', 'cssmin', 'ngmin', 'uglify', 'clean']);
+  grunt.registerTask('build', ['jshint', 'stylus', 'cssmin', 'ngAnnotate', 'uglify', 'clean']);
   grunt.registerTask('test', ['karma']);
 
-  grunt.loadNpmTasks('grunt-favicons');
   grunt.loadNpmTasks('grunt-aerobatic');
-  // grunt.loadTasks('../grunt-aerobatic/tasks');
   grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-ngmin');
+  grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-karma');
 };
