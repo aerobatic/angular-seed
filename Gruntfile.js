@@ -16,7 +16,11 @@ module.exports = function(grunt) {
     },
     cssmin: {
       minify: {
+<<<<<<< HEAD
         src: ['bower_components/normalize-css/normalize.css', 'css/styles.css'],
+=======
+        src: ['bower_components/normalize-css/normalize.css', 'css/app.css'],
+>>>>>>> b781f70f732d36ab13e64a82d488f686c2216f5d
         dest: 'dist/app.min.css'
       }
     },
