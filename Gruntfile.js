@@ -14,23 +14,13 @@ module.exports = function(grunt) {
         }
       }
     },
-    stylus: {
-      compile: {
-        options: {
-          paths: ['css'],
-          'include css': true
-        },
-        files: {
-          'tmp/styles.css': ['css/*.styl'] // compile and concat into single file
-        }
-      }
-    },
     cssmin: {
       minify: {
-        src: ['tmp/styles.css'],
-        dest: 'dist/styles.min.css'
+        src: ['bower_components/normalize-css/normalize.css', 'css/styles.css'],
+        dest: 'dist/app.min.css'
       }
     },
+    // Inject the angular dependency injection
     ngAnnotate: {
       target: {
         files: {
@@ -43,19 +33,20 @@ module.exports = function(grunt) {
         spawn: true,
         livereload: true
       },
-      stylus: {
-        files: ['css/*.styl', 'css/*.css'],
-        tasks: ['stylus', 'cssmin', 'clean']
+      html: {
+        files: ['index.html', 'partials/*.html'],
+      },
+      css: {
+        files: ['css/*.css'],
       },
       js: {
-        files: ['js/**/*.js'],
-        tasks: ['jslint']
+        files: ['js/**/*.js']
       }
     },
     clean: ['tmp'],
     aerobatic: {
       deploy: {
-        src: ['index.html', 'dist/*.*', 'favicons/*', 'partials/*.html', 'images/*.jpeg'],
+        src: ['index.html', 'dist/*.*', 'favicon.ico', 'partials/*.html', 'images/*.jpeg'],
       },
       sim: {
         index: 'index.html',
@@ -74,12 +65,11 @@ module.exports = function(grunt) {
           'test/unit/**/*.js'
         ],
         frameworks: ['jasmine'],
-        browsers: ['Chrome'],
+        browsers: ['PhantomJS'],
         logLevel: 'INFO',
         plugins : [
           'karma-jasmine',
-          'karma-phantomjs-launcher',
-          'karma-chrome-launcher'
+          'karma-phantomjs-launcher'
         ],
         reporters: 'dots'
       },
@@ -90,14 +80,13 @@ module.exports = function(grunt) {
   });
 
   // Specify the sync arg to avoid blocking the watch
-  grunt.registerTask('sim', ['build', 'aerobatic:sim:sync', 'watch']);
+  grunt.registerTask('sim', ['aerobatic:sim:sync', 'watch']);
   grunt.registerTask('deploy', ['build', 'aerobatic:deploy']);
 
-  grunt.registerTask('build', ['jshint', 'stylus', 'cssmin', 'ngAnnotate', 'uglify', 'clean']);
+  grunt.registerTask('build', ['jshint', 'cssmin', 'ngAnnotate', 'uglify', 'clean']);
   grunt.registerTask('test', ['karma']);
 
   grunt.loadNpmTasks('grunt-aerobatic');
-  grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');

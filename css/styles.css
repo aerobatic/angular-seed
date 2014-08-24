@@ -1,0 +1,24 @@
+body {
+  padding: 100px;
+  font-family: 'Open Sans',sans-serif;
+  background-color: #F7F7F7;
+}
+
+h1 {
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 50px;
+}
+
+#centered {
+  width: 500px;
+  margin: 0 auto;
+  padding: 50px;
+}
+
+img.logo {
+  display: block;
+  float: left;
+  width: 100px;
+  align: text-top;
+}
