@@ -1,6 +1,6 @@
 
-angular.module('seedControllers').controller('IndexCtrl', function($scope, $location, Thing) {
+angular.module('controllers').controller('IndexCtrl', function($scope, $location, aerobatic) {
   'use strict';
 
-  $scope.things = Thing.list();
+  $scope.repoUrl = 'https://github.com/aerobatic/angular-seed/';
 });
