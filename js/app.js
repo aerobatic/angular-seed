@@ -32,11 +32,7 @@ angular.module('angularSeed').run(function($rootScope, $location, aerobatic) {
   if (aerobatic.simulator === true) {
     var originalQuery = $location.search();
     $rootScope.$on('$routeChangeStart', function() {
-<<<<<<< HEAD
       for (var key in originalQuery) {
-=======
-      for (key in originalQuery) {
->>>>>>> b781f70f732d36ab13e64a82d488f686c2216f5d
         $location.search(key, originalQuery[key]);
       }
     });
