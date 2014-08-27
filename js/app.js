@@ -5,22 +5,16 @@ angular.module('directives', []);
 // Simple service wrapper around the __config__ global;
 angular.module('services').value('aerobatic', window.__config__);
 
-angular.module('angularSeed', ['ngRoute', 'services', 'controllers', 'directives'])
+angular.module('angularSeed', ['ngRoute', 'services', 'controllers', 'directives', 'templates'])
   .config(function ($routeProvider, $locationProvider, $sceDelegateProvider) {
     // Use html5 pushState for route navigation
     $locationProvider.html5Mode(true);
 
-    // Configure the the cdnHost to be whitelisted for cross-domain calls
-    $sceDelegateProvider.resourceUrlWhitelist([
-      'self',
-      'http://' + __config__.cdnHost + '/**',
-      'https://' + __config__.cdnHost + '/**'
-    ]);
-
     $routeProvider
       .when('/', {
         controller: 'IndexCtrl',
-        templateUrl: __config__.cdnUrl + '/partials/index.html'
+        // The templates have already been pre-cached so no network call is incurred
+        templateUrl: 'index.html'
       })
       .otherwise({redirectTo: '/'});
   });

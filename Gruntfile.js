@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     uglify: {
       build: {
         files: {
-          'dist/app.min.js': ['tmp/annotated.js']
+          'dist/app.min.js': ['tmp/templates.js', 'tmp/annotated.js']
         }
       }
     },
@@ -28,13 +28,29 @@ module.exports = function(grunt) {
         }
       }
     },
+    html2js: {
+      options: {
+        base: 'partials',
+        module: 'templates',
+        singleModule: true
+      },
+      main: {
+        src: ['partials/*.html'],
+        dest: 'tmp/templates.js'
+      },
+    },
     watch: {
       options: {
         spawn: true,
         livereload: true
       },
+      // Regenerate templates.js whenever a partial changes
+      templates: {
+        files: ['partials/*.html'],
+        tasks: ['html2js']
+      },
       html: {
-        files: ['index.html', 'partials/*.html'],
+        files: ['index.html'],
       },
       css: {
         files: ['css/*.css'],
@@ -46,7 +62,7 @@ module.exports = function(grunt) {
     clean: ['tmp'],
     aerobatic: {
       deploy: {
-        src: ['index.html', 'dist/*.*', 'favicon.ico', 'partials/*.html', 'images/*.*'],
+        src: ['index.html', 'dist/*.*', 'favicon.ico', 'images/*.*'],
       },
       sim: {
         index: 'index.html',
@@ -80,10 +96,10 @@ module.exports = function(grunt) {
   });
 
   // Specify the sync arg to avoid blocking the watch
-  grunt.registerTask('sim', ['aerobatic:sim:sync', 'watch']);
+  grunt.registerTask('sim', ['html2js', 'aerobatic:sim:sync', 'watch']);
   grunt.registerTask('deploy', ['build', 'aerobatic:deploy']);
 
-  grunt.registerTask('build', ['jshint', 'cssmin', 'ngAnnotate', 'uglify', 'clean']);
+  grunt.registerTask('build', ['jshint', 'html2js', 'cssmin', 'ngAnnotate', 'uglify', 'clean']);
   grunt.registerTask('test', ['karma']);
 
   grunt.loadNpmTasks('grunt-aerobatic');
@@ -92,6 +108,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-karma');
 };
