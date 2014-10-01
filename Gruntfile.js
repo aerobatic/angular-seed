@@ -59,13 +59,20 @@ module.exports = function(grunt) {
         files: ['js/**/*.js']
       }
     },
+    concat: {
+      vendor: {
+        // Include any other vendor components
+        src: ['bower_components/angular-aerobatic/angular-aerobatic.min.js'],
+        dest: 'dist/vendor.min.js',
+      }
+    },
     clean: ['tmp'],
     aerobatic: {
       deploy: {
+        cowboy: true,
         src: ['index.html', 'dist/*.*', 'favicon.ico', 'images/*.*'],
       },
       sim: {
-        index: 'index.html',
         port: 3000,
         livereload: true
       }
@@ -99,7 +106,7 @@ module.exports = function(grunt) {
   grunt.registerTask('sim', ['html2js', 'aerobatic:sim:sync', 'watch']);
   grunt.registerTask('deploy', ['build', 'aerobatic:deploy']);
 
-  grunt.registerTask('build', ['jshint', 'html2js', 'cssmin', 'ngAnnotate', 'uglify', 'clean']);
+  grunt.registerTask('build', ['jshint', 'html2js', 'cssmin', 'ngAnnotate', 'uglify', 'concat', 'clean']);
   grunt.registerTask('test', ['karma']);
 
   grunt.loadNpmTasks('grunt-aerobatic');
@@ -108,6 +115,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-karma');
