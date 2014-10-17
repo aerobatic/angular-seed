@@ -88,11 +88,11 @@ module.exports = function(grunt) {
           'test/unit/**/*.js'
         ],
         frameworks: ['jasmine'],
-        browsers: ['PhantomJS'],
+        browsers: ['Chrome'],
         logLevel: 'INFO',
         plugins : [
           'karma-jasmine',
-          'karma-phantomjs-launcher'
+          'karma-chrome-launcher'
         ],
         reporters: 'dots'
       },
