@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     jshint: {
-      all: ['Gruntfile.js', 'js/**/*.js', 'test/**/*.js']
+      all: ['Gruntfile.js', 'app/js/**/*.js', 'test/**/*.js']
     },
     uglify: {
       build: {
@@ -16,7 +16,7 @@ module.exports = function(grunt) {
     },
     cssmin: {
       minify: {
-        src: ['bower_components/normalize-css/normalize.css', 'css/styles.css'],
+        src: ['bower_components/normalize-css/normalize.css', 'app/css/styles.css'],
         dest: 'dist/app.min.css'
       }
     },
@@ -24,67 +24,50 @@ module.exports = function(grunt) {
     ngAnnotate: {
       target: {
         files: {
-          'tmp/annotated.js': ['js/**/*.js']
+          'tmp/annotated.js': ['app/js/**/*.js']
         }
       }
     },
     html2js: {
+      // Compile partial views into an angular module called 'templates' (name is important).
+      // In debug mode template files are loaded directly via XHR. In release builds the 
+      // tmp/templates.js file should be included in the app.min.js script. Templates will be 
+      // preloaded in the $templateCache avoiding additional network round trips.
       options: {
-        base: 'partials',
+        base: 'app',
         module: 'templates',
         singleModule: true
       },
       main: {
-        src: ['partials/*.html'],
+        src: ['app/partials/*.html'],
         dest: 'tmp/templates.js'
       },
     },
-    watch: {
-      options: {
-        spawn: true,
-        livereload: true
-      },
-      // Regenerate templates.js whenever a partial changes
-      templates: {
-        files: ['partials/*.html'],
-        tasks: ['html2js']
-      },
-      html: {
-        files: ['index.html'],
-      },
-      css: {
-        files: ['css/*.css'],
-      },
-      js: {
-        files: ['js/**/*.js']
+    copy: {
+      dist: {
+        files: [
+          {src: 'app/index.html', dest: 'dist/index.html'},
+          {src: 'app/favicon.ico', dest: 'dist/favicon.ico'},
+          {expand: true, cwd:'app', src: ['images/**'], dest: 'dist/'}
+        ]
       }
     },
     concat: {
       vendor: {
         // Include any other vendor components
-        src: ['bower_components/angular-aerobatic/angular-aerobatic.min.js'],
+        src: ['node_modules/angular-aerobatic/angular-aerobatic.min.js'],
         dest: 'dist/vendor.min.js',
       }
     },
-    clean: ['tmp'],
-    aerobatic: {
-      deploy: {
-        cowboy: true,
-        src: ['index.html', 'dist/*.*', 'favicon.ico', 'images/*.*'],
-      },
-      sim: {
-        port: 3000,
-        livereload: true
-      }
-    },
+    clean: ['dist', 'tmp'],
     // See https://github.com/karma-runner/grunt-karma for more options
     karma: {
       options: {
         files: [
-          'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js',
-          'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.min.js',
-          'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-mocks.js',
-          'js/**/*.js',
+          'node_modules/angular/angular.js',
+          'node_modules/angular/angular-route.js',
+          'node_modules/angular/angular-mocks.js',
+          'app/js/**/*.js',
           'test/unit/**/*.js'
         ],
         frameworks: ['jasmine'],
@@ -103,19 +86,15 @@ module.exports = function(grunt) {
   });
 
   // Specify the sync arg to avoid blocking the watch
-  grunt.registerTask('sim', ['html2js', 'aerobatic:sim:sync', 'watch']);
-  grunt.registerTask('deploy', ['build', 'aerobatic:deploy']);
-
-  grunt.registerTask('build', ['jshint', 'html2js', 'cssmin', 'ngAnnotate', 'uglify', 'concat', 'clean']);
+  grunt.registerTask('build', ['clean', 'jshint', 'html2js', 'cssmin', 'ngAnnotate', 'uglify', 'concat', 'copy:dist']);
   grunt.registerTask('test', ['karma']);
 
-  grunt.loadNpmTasks('grunt-aerobatic');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
-  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-karma');

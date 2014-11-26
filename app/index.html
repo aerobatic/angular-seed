@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Aerobatic Angular Seed</title>
+    <base href="/" />
+
+    <!-- Consolidated stylesheet for release and individual files in debug -->
+    <link data-aero-build="release" rel="Stylesheet" href="app.min.css">
+
+    <!-- Even though node_modules is in the root of the repo, yoke will resolve it correctly -->
+    <link data-aero-build="debug" rel="Stylesheet" href="node_modules/normalize.css/normalize.css">
+    <link data-aero-build="debug" rel="Stylesheet" href="css/styles.css">
+
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body>
+    <div ng-app="angularSeed">
+      <section id="main" ng-view></section>
+    </div>
+
+    <!-- Consolidated release script which will be stripped from debug builds  -->
+    <div data-aero-build="release">
+      <!-- Use Google CDN for release builds -->
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.min.js"></script>
+
+      <!-- Our own consolidated scripts -->
+      <script src="vendor.min.js"></script>
+      <script src="app.min.js"></script>
+    </div>
+
+    <!-- Individual scripts for debug build -->
+    <div data-aero-build="debug">
+      <script src="node_modules/angular/angular.js"></script>
+      <script src="node_modules/angular-route/angular-route.js"></script>
+      <script src="node_modules/angular-aerobatic/angular-aerobatic.js"></script>      
+      <script src="js/app.js"></script>
+      <script src="js/controllers/indexCtrl.js"></script>
+    </div>
+  </body>
+</html>
