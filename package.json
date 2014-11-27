@@ -2,12 +2,9 @@
   "name": "angular-seed",
   "version": "1.0.0",
   "description": "Angular seed project for the Aerobatic platform",
-  "main": "grunt sim",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "build": "grunt build"
   },
   "repository": {
     "type": "git",
@@ -18,7 +15,6 @@
     "angular",
     "seed"
   ],
-  "author": "David Von Lehman",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/aerobatic/angular-seed/issues"
