@@ -1,9 +1,0 @@
-{
-  "name": "angular-seed",
-  "version": "0.0.1",
-  "private": true,
-  "dependencies": {
-    "normalize-css": "~3.0.1",
-    "angular-aerobatic": "*"
-  }
-}
