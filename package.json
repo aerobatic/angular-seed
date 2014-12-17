@@ -2,7 +2,6 @@
   "name": "angular-seed",
   "version": "1.0.0",
   "description": "Angular seed project for the Aerobatic platform",
-  "main": "grunt sim",
   "directories": {
     "test": "test"
   },
