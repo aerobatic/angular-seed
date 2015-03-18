@@ -9,12 +9,18 @@ angular.module('directives', []);
     // Use html5 pushState for route navigation
     $locationProvider.html5Mode(true);
 
+    $sceDelegateProvider.resourceUrlWhitelist([
+      // Allow same origin resource loads.
+      'self',
+      location.protocol + aerobaticProvider.config.assetPath + '/**'
+    ]);
+
     // In release mode templates should be compiled to JavaScript and added to the $templateCache. In 
     // this case we refer to the templates simply by their relative path, i.e. 'partials/index.html'.
     // But in debug mode it's simpler to load the templates on demand via absolute URL. This avoids 
     // having to configure a watch task to continously re-generated the compiled template script 
     // everytime one is changed.
-    
+
     // The html2js grunt task or gulp-angular-templatecache can be used to compile the templates
     // into a module called 'templates' which is injected into this app.  
     function templateUrl(path) {
