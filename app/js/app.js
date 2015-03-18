@@ -7,6 +7,12 @@ angular.module('angularSeed', ['ngRoute', 'Aerobatic', 'services', 'controllers'
     // Use html5 pushState for route navigation
     $locationProvider.html5Mode(true);
 
+    $sceDelegateProvider.resourceUrlWhitelist([
+      // Allow same origin resource loads.
+      'self',
+      location.protocol + aerobaticProvider.config.assetPath + '/**'
+    ]);
+
     $routeProvider
       .when('/', {
         controller: 'IndexCtrl',
